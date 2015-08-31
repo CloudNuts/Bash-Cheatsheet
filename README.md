@@ -2,11 +2,11 @@ Bash Shell Cheatsheet
 =====================
 The main topics of this cheatsheet include an intro to the shell, navigating around the shell, common commands, environment variables, connectors, piping, I/O redirection, permissions, and keyboard shortcuts.
 ##Introduction to the Shell
-The shell is a program, in our case, called "bash" which stands for Bourne Again Shell. 
+The shell is a program, in our case, called "bash" which stands for Bourne Again Shell.
 How the shell works is it takes your commands and gives them to the operating system to perform.
-In order to interact with the shell, we use "terminal emulators" such as the [gnome-terminal](https://help.gnome.org/users/gnome-terminal/stable/), [eterm](http://www.eterm.org/), nxterm, etc. 
+In order to interact with the shell, we use "terminal emulators" such as the [gnome-terminal](https://help.gnome.org/users/gnome-terminal/stable/), [eterm](http://www.eterm.org/), nxterm, etc.
 ##Navigating Around The Shell
-On a Linux system, files are organized in a hierarchical directory structure. 
+On a Linux system, files are organized in a hierarchical directory structure.
 This means there is a starting directory called the root directory.
 This directory contains files and subdirectories that lead into other subdirectories.
 ###pwd
@@ -55,13 +55,47 @@ For example, the following prints all 50 lines of the file. <br>
 ```
   $ tail -50 test.txt
 ```
+You can also view in real time any text appended to the file with the `-f` flag.
+```
+$ tail -f test.txt
+```
+###less
+The `less` command gives you a way to navigate through a passed file or block of text. Unlike the `more` command, less allows you to move backward through the file as well.
+```
+$ less test.txt
+$ ps aux | less
+```
+Common less keyboard shortcuts | Description
+--- | ---
+  `G` | Moves to end of file
+  `g` | Moves to beginning of file
+  `:50` | Moves to the 50th line of the file
+  `q` | Exits less
+  `/searchterm` | Searches for any string matching 'searchterm' below the current line
+  `/` | Moves you to the next match for your previous 'searchterm' below the current line
+   `?searchterm` | Searches for any string matching 'searchterm' above the current line
+  `?` | Moves you to the next match for your previous 'searchterm' above the current line
+  `up` | Moves up a line
+  `down` | Moves down a line
+  `pageup` | Moves up a page
+  `pagedown` | Moves down a page
 ###true
 The `true` command always returns the exit status zero to indicate success.
 ###false
 The `false` command always returns the exit status non-zero to indicate failure.
+###`$?`
+`$?` is a variable that will return the exit code of the last command you ran.
+```
+$ true
+$ echo $?
+  0
+$ false
+$ echo $?
+  1
+ ```
 ###grep
 The `grep` command is a search function. <br>
-Passing a string and a file searches the file for the given string and prints the occurrences to standard output. 
+Passing a string and a file searches the file for the given string and prints the occurrences to standard output.
 ```
   $ cat users.txt
   user:student password:123
@@ -71,7 +105,7 @@ Passing a string and a file searches the file for the given string and prints th
 ```
 `grep` can take multiple files as parameters and regular expressions to specify a pattern in text.
 
-Common flags | Description 
+Common flags | Description
 --- | ---
   `-i` | remove case sensitivity
   `-r` | search recursively through directories
@@ -79,18 +113,18 @@ Common flags | Description
   `-c` | prints number of times found
   `-n` | prints line found on with phrase
   `-v` | prints invert match
-[See regex tutorial](../../textbook/using-bash/regex)
+[See regex tutorial](https://github.com/mikeizbicki/ucr-cs100/tree/2015winter/textbook/using-bash/regex)
 ###sed
 The `sed` command is a stream editor that performs text transformations on an input. <br>
-Common use of this command is to replace expressions which takes the form `s/regexp/replacement/`
+Common use of this command is to replace expressions which takes the form `s/regexp/replacement/g`
 For example, the following replaces all occurrences of the phrase "Hello" with "Hi".
 ```
   $ cat test.txt
   Hello World
-  $ sed 's/Hello/Hi/' test.txt
+  $ sed 's/Hello/Hi/g' test.txt
   Hi World
 ```
-[See sed tutorial](../../textbook/using-bash/sed)
+[See sed tutorial](https://github.com/mikeizbicki/ucr-cs100/tree/2015winter/textbook/using-bash/sed)
 ###history
 The `history` command prints out an incremented command line history. <br>
 It is common to use the `grep` command with the `history` command in order to search for a particular command.
@@ -113,9 +147,9 @@ The `ps` command, short for process status, prints out information about the pro
   PID TTY          TIME CMD
   35346 pts/2    00:00:00 bash
 ```
-There are four items displayed: 
+There are four items displayed:
   * process identification number (PID)
-  * terminal type (TTY), 
+  * terminal type (TTY),
   * how long process has been running (TIME)
   * name of command that launched the process (CMD)
 
@@ -129,7 +163,7 @@ The `wget` command downloads files from the web and stores it in the current wor
 ```
 ###nc
 The `nc` command, short for netcat, is a utility used to debug and investigate the network. <br>
-[See nc tutorial](../../textbook/using-bash/nc-tutorial)
+[See nc tutorial](https://github.com/mikeizbicki/ucr-cs100/tree/2015winter/textbook/using-bash/nc-tutorial)
 ###ping
 The `ping` command tests a network connection. <br>
 ```
@@ -143,7 +177,7 @@ The `ping` command tests a network connection. <br>
 The statistics at the end show an overview of how many connections went through before we called `^C` and how long it took.
 ###git
 `Git` is a version control system that is commonly used in the industry and in open source projects. <br>
-[See git tutorial](../../assignments/lab/lab1-git)
+[See git tutorial](https://github.com/mikeizbicki/ucr-cs100/tree/2015winter/assignments/lab/lab1-git)
 ##Environment Variables
 Environment variables are named variables that contain values used by one or more applications. <br>
 The `PATH` variable contains a list of directories where systems look for executable files. <br>
@@ -167,7 +201,7 @@ Connector | Description
   test.txt file1.txt file2.txt
 ```
 ##Piping
-Pipes connect multiple commands together by sending the stdout of the first command to the stdin of the next command. 
+Pipes connect multiple commands together by sending the stdout of the first command to the stdin of the next command.
 For example, the following sends the `ls` output to `head` so that only the top 10 items get printed. <br>
 ```
   $ ls -l | head
@@ -183,7 +217,7 @@ For example, the following sends the output of `ls` into the file instead of pri
 ```
 If the file isn't already in your working directory, the file gets created.
 If the file already exists, then the contents of the command overwrites what is already in the file. <br>
-To avoid overwriting a file, the `>>>` command appends to the end of the file instead.
+To avoid overwriting a file, the `>>` command appends to the end of the file instead.
 ###Input Redirection
 Standard input redirection uses the symbol `<`. <br>
 For example, the following causes `sort` to access its input from the file instead of the keyboard.
@@ -204,7 +238,7 @@ But we can combine I/O redirection into one command line, such as:
 Adding a `&` with the `>` symbol results in redirecting both standard out and standard error.
 For example, the `test.cpp` file prints the string "stdout" with `cout` and the string "stderr" with `cerr`.
 ```
-  $ g++ test.cpp 
+  $ g++ test.cpp
   $ ./a.out >& test.txt
   $ cat test.txt
   stdout
@@ -214,13 +248,13 @@ The `>` symbol alone only redirects standard output. <br>
 If you only want to redirect a specific file descriptor you can attach the file descriptor number to `>`.
 
 Name | File Descriptor | Description
---- | --- | --- 
+--- | --- | ---
 stdin | 0 | standard input stream
 stdout | 1 | standard output stream
 stderr | 2 | standard error output stream
 For example, if I only wanted to redirect "stderr" to the file `test.txt` from the above example, I would do the following:
 ```
-  $ g++ test.cpp 
+  $ g++ test.cpp
   $ ./a.out 2> test.txt
   stdout
   $ cat test.txt
@@ -231,24 +265,25 @@ The command `ls -l` prints out a lot of information about each file that is info
 ```
   $ ls -l test.txt
   -rw-rw-r--  1  user  group  1097374 January 26 2:48 test.txt
-``` 
+```
 
-Output from example above | Description/Possible Outputs 
---- | --- 
-- | File type: <br> `-`= regular file <br> `d`= directory 
+Output from example above | Description/Possible Outputs
+--- | ---
+- | File type: <br> `-`= regular file <br> `d`= directory
 rw- | Permissions for owner of file
 rw- | Permissions for members of the group owning the file
 r-- | Permissions for all other users
-user | name of user
-group | name of group
+user | name of user owning the file
+group | name of group owning the file
 ###chmod
 The `chmod` command, short for change mode, changes the permissions of a file. <br>
-There is a combination of letters that need to be known in order to change specific users' permission. 
+There is a combination of letters that need to be known in order to change specific users' permission.
 
 Letter | User
 --- | ---
 u | User who owns it
 g | Users in the group
+o | Other users not in the group
 a | All users
 You call `chmod` by describing which actions you want to perform and to which file.
 The `-` symbol represents taking away permissions while the `+` symbol represents adding permissions.
@@ -270,7 +305,7 @@ Each set of permissions represents a single digit so the following commands have
 ```
   $ chmod 660 test.txt
 ```
-[See permissions tutorial](../../textbook/using-bash/file-permission)
+[See permissions tutorial](https://github.com/mikeizbicki/ucr-cs100/tree/2015winter/textbook/using-bash/file-permission)
 ##Keyboard Shortcuts
 Shortcut | Description
 --- | ---
@@ -278,7 +313,7 @@ CTRL-A | Move cursor to beginning of line
 CTRL-E | Move cursor to end of line
 CTRL-R | Search bash history
 CTRL-W | Cut the last word
-CTRL-U | Cut everything before the cursor 
+CTRL-U | Cut everything before the cursor
 CTRL-K | Cut everything after the cursor
 CTRL-Y | Paste the last thing to be cut
 CTRL-_ | Undo
